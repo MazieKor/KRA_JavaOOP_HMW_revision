@@ -7,12 +7,12 @@ public class BankAccount {
     private final String RESET = "\033[0m";
 
     private int number;
-    private double cash = 0;  //NEW w inicjalizacji nie opieram się na default value
+    private double cash = 0;
 
     public BankAccount(int number) {
-        if (number <= 0) {   //NEW warunek w konstr.
+        if (number <= 0) {
             System.out.println(RED + "Account number must be greater than 0. Start again" + RESET);
-            throw new IllegalArgumentException("Number negative or 0");  //NEW: konstruktor i exception
+            throw new IllegalArgumentException("Number negative or 0");
         }
         this.number = number;
     }
@@ -35,9 +35,9 @@ public class BankAccount {
             String chosenOption = scan.nextLine().trim();
             switch (chosenOption) {
                 case "1":
-                    String accountInfo = printInfo();   //NEW: kilka operacji bez { }
+                    String accountInfo = printInfo();
                     System.out.println(accountInfo);
-                    continue choosingOperationLoop;  //NEW: bez breaka, a nie wywołuje następnych caseów
+                    continue choosingOperationLoop;
                 case "2":
                     depositCash();
                     continue choosingOperationLoop;
@@ -60,7 +60,7 @@ public class BankAccount {
     public void depositCash() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please write how much you want to deposit");
-        while(!scanner.hasNextDouble()){  //NEW int wchodzi jako double
+        while(!scanner.hasNextDouble()){
             System.out.println(RED + "Incorrect number. Please give cash you want to deposit" + RESET);
             scanner.next();                //I use simplified version of validation
         }
@@ -99,6 +99,6 @@ public class BankAccount {
     public String printInfo() {
         StringBuilder accountData = new StringBuilder();
         accountData.append("Account number: ").append(number).append("\n").append("Account balance: ").append(cash);
-        return accountData.toString();  //NEW: check this toString
+        return accountData.toString();
     }
 }
