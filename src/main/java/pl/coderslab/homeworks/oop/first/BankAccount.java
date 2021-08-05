@@ -3,12 +3,15 @@ package pl.coderslab.homeworks.oop.first;
 import java.util.Scanner;
 
 public class BankAccount {
+    private final String RED = "\033[0;31m";   //for simplifying I use in the same class
+    private final String RESET = "\033[0m";
+
     private int number;
     private double cash = 0;  //NEW w inicjalizacji nie opieram się na default value
 
     public BankAccount(int number) {
         if (number <= 0) {   //NEW warunek w konstr.
-            System.out.println("Account number must be greater than 0. Start again");
+            System.out.println(RED + "Account number must be greater than 0. Start again" + RESET);
             throw new IllegalArgumentException("Number negative or 0");  //NEW: konstruktor i exception
         }
         this.number = number;
@@ -27,7 +30,7 @@ public class BankAccount {
         choosingOperationLoop:
         while (true) {
             System.out.println("Please choose number, what you want to do:" + "\n" +
-                    "1.See your account information (acc. number and balance)  |  2.Add cash to your account  |" +
+                    "1.See your account number and balance  |  2.Add cash to your account  |" +
                     "  3.Withdraw cash from your account  |  4.Exit application");
             String chosenOption = scan.nextLine().trim();
             switch (chosenOption) {
@@ -39,26 +42,31 @@ public class BankAccount {
                     depositCash();
                     continue choosingOperationLoop;
                 case "3":
-                    withdrawCash();
+                    try {
+                        double withdrawAmount = withdrawCash();
+                        System.out.println(withdrawAmount + " was withdrawn from your account");
+                    } catch (IllegalArgumentException e){
+                    }
                     continue choosingOperationLoop;
                 case "4":
                     System.out.println("See you soon");
                     break choosingOperationLoop;
                 default:
-                    System.out.println("Number you chose is not on the list");
+                    System.out.println(RED + "Number you chose is not on the list" + RESET);
             }
         }
     }
 
     public void depositCash() {
         Scanner scanner = new Scanner(System.in);
-        while(!scanner.hasNextDouble()){  //NEW int wchodzi jako double??
-            System.out.println("please give cash you want to deposit");
-            scanner.next();
+        System.out.println("Please write how much you want to deposit");
+        while(!scanner.hasNextDouble()){  //NEW int wchodzi jako double
+            System.out.println(RED + "Incorrect number. Please give cash you want to deposit" + RESET);
+            scanner.next();                //I use simplified version of validation
         }
         double amount = scanner.nextDouble();
         if (amount < 0) {
-            System.out.println("You can't add negative number in this metod. Try once again");
+            System.out.println(RED + "You can't add negative number in this method. Try once again" + RESET);
             return;
         }
         cash += amount;
@@ -67,20 +75,21 @@ public class BankAccount {
 
     public double withdrawCash() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Please write how much you want to withdraw");
         while(!scanner.hasNextDouble()){
-            System.out.println("Incorrect number. Please give cash you want to withdraw");
+            System.out.println(RED + "Incorrect number. Please give cash you want to withdraw" + RESET);
+            scanner.next();                 //I use simplified version of validation
         }
-
-
+        double amount = scanner.nextDouble();
         if (amount < 0) {
-            System.out.println("You can't add negative number in this metod. Try once again");
-            throw new IllegalArgumentException("negative number");
+            System.out.println(RED + "You can't add negative number in this method. Try once again" + RESET);
+            throw new IllegalArgumentException("negative number");  //I throw exception to exit method (differently than in depositCash void method where I used return;)
         }
         if (amount <= cash) {
             cash -= amount;
             return amount;
         } else {
-            System.out.println("You want to withdraw more than is your current account balance. Only " + cash + " was withdrawn");
+            System.out.print(RED + "You wanted to withdraw more than is your current account balance. " + RESET);
             double withdraw = cash;
             cash = 0;
             return withdraw;
