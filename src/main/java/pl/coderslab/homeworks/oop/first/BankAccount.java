@@ -88,12 +88,12 @@ public class BankAccount {
         if (amount <= cash) {
             cash -= amount;
             return amount;
-        } else {
-            System.out.print(RED + "You wanted to withdraw more than is your current account balance. " + RESET);
-            double withdraw = cash;
-            cash = 0;
-            return withdraw;
         }
+        System.out.print(RED + "You wanted to withdraw more than is your current account balance. " + RESET);
+        double withdraw = cash;
+        cash = 0;
+        return withdraw;
+
     }
 
     public String printInfo() {
