@@ -93,7 +93,6 @@ public class BankAccount {
         double withdraw = cash;
         cash = 0;
         return withdraw;
-
     }
 
     public String printInfo() {
